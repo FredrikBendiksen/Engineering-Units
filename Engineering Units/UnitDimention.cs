@@ -9,10 +9,10 @@
             BaseUnit = baseUnit;
         }
 
-        char Symbol { get; set; }
+        public char Symbol { get; set; }
         
-        string Definition { get; set; }
+        public string Definition { get; set; }
 
-        UOM BaseUnit { get; set; }
+        public UOM BaseUnit { get; set; }
     }
 }

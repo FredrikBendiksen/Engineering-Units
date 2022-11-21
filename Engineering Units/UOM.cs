@@ -9,21 +9,21 @@ namespace Engineering_Units
 {
     internal class UOM
     {
-        string Name { get; set; }
+        public string Name { get; set; }
         
-        List<QuantityClass> QuantityClass { get; set; }
+        public List<QuantityClass> QuantityClass { get; set; }
         
-        string Annotation { get; set; }
+        public string Annotation { get; set; }
         
-        ConversionParameters? ConversionParameters { get; set; }
+        public ConversionParameters? ConversionParameters { get; set; }
     }
     
     internal class ConversionParameters
     {
-        UOM BaseUnit { get; set; }
-        int A { get; set; }
-        int B { get; set; }
-        int C { get; set; }
-        int D { get; set; }
+        public UOM BaseUnit { get; set; }
+        public int A { get; set; }
+        public int B { get; set; }
+        public int C { get; set; }
+        public int D { get; set; }
     }
 }

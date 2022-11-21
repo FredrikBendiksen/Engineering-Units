@@ -9,9 +9,9 @@ namespace Engineering_Units
     internal class QuantityClass
     {
 
-        string Name { get; set; }
+        public string Name { get; set; }
 
-        List<string> UnitNames { get; set; }
+        public List<string> UnitNames { get; set; }
 
     }
 }

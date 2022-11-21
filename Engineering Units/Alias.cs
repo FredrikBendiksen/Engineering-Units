@@ -14,8 +14,8 @@ namespace Engineering_Units
             UOMName = uomName;
         }
 
-        string AliasName { get; set; }
+        public string AliasName { get; set; }
 
-        string UOMName { get; set; }
+        public string UOMName { get; set; }
     }
 }
