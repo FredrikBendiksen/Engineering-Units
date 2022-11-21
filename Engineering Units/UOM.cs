@@ -20,10 +20,18 @@ namespace Engineering_Units
     
     internal class ConversionParameters
     {
-        public UOM BaseUnit { get; set; }
-        public int A { get; set; }
-        public int B { get; set; }
-        public int C { get; set; }
-        public int D { get; set; }
+        public ConversionParameters(string baseUnit, decimal a, decimal b, decimal c, decimal d)
+        {
+            BaseUnit = baseUnit;
+            A = a;
+            B = b;
+            C = c;
+            D = d;
+        }
+        public string BaseUnit { get; set; }
+        public decimal A { get; set; }
+        public decimal B { get; set; }
+        public decimal C { get; set; }
+        public decimal D { get; set; }
     }
 }

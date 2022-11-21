@@ -8,11 +8,36 @@ namespace Engineering_Units
 {
     internal class Conversion
     {
-        public (float result, UOM uom) Convert(float value, UOM from, UOM to)
+        public static (decimal result, UOM? uom) Convert(decimal value, UOM? from, UOM? to)
         {
-            float result = 0; // TODO
+            if (from == null || to == null)
+            {
+                return (0, null);
+            }
 
-            return (result, to);
+            decimal baseValue;
+            if (from.ConversionParameters == null)
+            {
+                baseValue = value;
+            }
+            else
+            {
+                baseValue = (from.ConversionParameters.A / from.ConversionParameters.C)
+                    + (value * from.ConversionParameters.B / from.ConversionParameters.C);
+            }
+
+            decimal newValue;
+            if (to.ConversionParameters == null)
+            {
+                newValue = baseValue;
+            }
+            else
+            {
+                newValue = - (to.ConversionParameters.A / to.ConversionParameters.B)
+                    + (baseValue * to.ConversionParameters.C / to.ConversionParameters.B);
+            }
+
+            return (newValue, to);
         }
     }
 }

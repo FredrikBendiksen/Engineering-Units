@@ -8,4 +8,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+
+    <ItemGroup>
+	    <ProjectReference Include="..\Engineering Units\Engineering Units.csproj" />
+    </ItemGroup>
 </Project>
