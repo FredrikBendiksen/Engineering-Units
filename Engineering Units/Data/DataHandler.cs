@@ -43,14 +43,21 @@ namespace Engineering_Units.Data
             LastUsedUOMs.Add(uom);
         }
 
-        internal UOM GetUOM(string UOMName)
+        internal UOM? GetUOM(string UOMName)
         {
+            if (string.IsNullOrEmpty(UOMName))
+            {
+                return null;
+            }
             UOM? uom = GetUOMFromMemory(UOMName);
             if (uom == null)
             {
                 // If not exists in memory; fetch from XML and update memory
                 uom = DataFetcher.GetUOM(UOMName);
-                SaveUOMToMemory(uom);
+                if (uom != null)
+                {
+                    SaveUOMToMemory(uom);
+                }
             }
             return uom;
         }
@@ -60,7 +67,7 @@ namespace Engineering_Units.Data
             return DataFetcher.GetUnitDimentions();
         }
 
-        internal static List<UOM> GetUOMForUnitDimention(string unitDimention)
+        internal static List<UOM> GetUOMsForUnitDimension(string unitDimention)
         {
             return DataFetcher.GetUOMsForUnitDimention(unitDimention);
         }
@@ -77,13 +84,13 @@ namespace Engineering_Units.Data
         {
             QuantityClass? subQuantityClass = SubQuantityClasses.FirstOrDefault(x => x.Name == quantityClass);
             List<UOM> uoms;
-            if (subQuantityClass != null)
+            if (subQuantityClass?.UnitNames != null)
             {
-                uoms = subQuantityClass.UnitNames.Select(x => GetUOM(x)).ToList();
+                uoms = subQuantityClass.UnitNames.Select(x => GetUOM(x)).Where(x => x != null).Select(x => x!).ToList();
             }
             else
             {
-                uoms = DataFetcher.GetUOMsForQuantityClass(quantityClass).ToList();
+                uoms = DataFetcher.GetUOMsForQuantityClass(quantityClass);
             }
             return uoms;
         }
@@ -93,14 +100,55 @@ namespace Engineering_Units.Data
             return Aliases.Where(x => x.UOMName == uomName).Select(x => x.AliasName).ToList();
         }
 
-        internal void CreateSubQuantityClass(QuantityClass newQuantityClass)
+        internal bool CreateAlias(string uomName, string newAlias)
         {
-            SubQuantityClasses.Add(newQuantityClass);
+            if (string.IsNullOrEmpty(newAlias) || string.IsNullOrEmpty(newAlias))
+            {
+                return false;
+            }
+            Aliases.Add(new Alias(newAlias, uomName));
+            return true;
         }
 
-        internal void CreateUOM(UOM newUOM)
+        internal bool CreateSubQuantityClass(QuantityClass newQuantityClass)
         {
+            if (string.IsNullOrEmpty(newQuantityClass?.Name) || newQuantityClass.UnitNames.Count == 0)
+            {
+                // Skip if any not all parameters are set
+                return false;
+            }
+            string? baseUOM = null;
+            foreach(string uomName in newQuantityClass.UnitNames)
+            {
+                UOM? uom = GetUOM(uomName);
+                if (uom == null)
+                {
+                    // Skip if any uomName doesn't exist
+                    return false;
+                }
+                string thisBaseUOM = uom.ConversionParameters == null ? uom.Name : uom.ConversionParameters.BaseUnit;
+                baseUOM ??= thisBaseUOM;
+                if (baseUOM != thisBaseUOM)
+                {
+                    // Skip if not all uoms has same baseUOM
+                    return false;
+                }
+            }
+            SubQuantityClasses.Add(newQuantityClass);
+            return true;
+        }
+
+        internal bool CreateUOM(UOM newUOM)
+        {
+            if (string.IsNullOrEmpty(newUOM?.Name) || string.IsNullOrEmpty(newUOM.Annotation)
+                || newUOM.QuantityClasses == null || newUOM.QuantityClasses.Count == 0
+                || newUOM.ConversionParameters == null)
+            {
+                return false;
+            }
+
             CustomUnits.Add(newUOM);
+            return true;
         }
     }
 }
