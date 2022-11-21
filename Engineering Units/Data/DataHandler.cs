@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Engineering_Units.Models;
 
-namespace Engineering_Units
+namespace Engineering_Units.Data
 {
     internal class DataHandler
     {
@@ -22,7 +23,7 @@ namespace Engineering_Units
 
             return uom;
         }
-        
+
         private void SaveUOMToMemory(UOM uom)
         {
             if (LastUsedUOMs.Any(u => u.Name == uom.Name) || CustomUnits.Any(u => u.Name == uom.Name))

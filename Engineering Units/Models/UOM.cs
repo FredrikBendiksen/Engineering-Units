@@ -5,16 +5,16 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Engineering_Units
+namespace Engineering_Units.Models
 {
     internal class UOM
     {
         public string Name { get; set; }
-        
+
         public List<QuantityClass> QuantityClass { get; set; }
-        
+
         public string Annotation { get; set; }
-        
+
         public ConversionParameters? ConversionParameters { get; set; }
 
         public DateTime? LastUsed { get; set; }
@@ -24,7 +24,7 @@ namespace Engineering_Units
             LastUsed = DateTime.Now;
         }
     }
-    
+
     internal class ConversionParameters
     {
         public ConversionParameters(string baseUnit, decimal a, decimal b, decimal c, decimal d)

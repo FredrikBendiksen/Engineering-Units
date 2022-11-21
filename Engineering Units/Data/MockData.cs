@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Engineering_Units.Models;
 
-namespace Engineering_Units
+namespace Engineering_Units.Data
 {
     internal class MockData : IFetchData
     {

@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
+using Engineering_Units.Models;
 
-
-namespace Engineering_Units
+namespace Engineering_Units.Data
 {
     internal static class DataFetcher
     {

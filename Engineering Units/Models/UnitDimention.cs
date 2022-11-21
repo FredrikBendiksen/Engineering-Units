@@ -1,4 +1,4 @@
-﻿namespace Engineering_Units
+﻿namespace Engineering_Units.Models
 {
     internal class UnitDimention
     {
@@ -10,7 +10,7 @@
         }
 
         public char Symbol { get; set; }
-        
+
         public string Definition { get; set; }
 
         public string BaseUnit { get; set; }
