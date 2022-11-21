@@ -2,7 +2,7 @@
 {
     internal class UnitDimention
     {
-        public UnitDimention(char symbol, string definition, UOM baseUnit)
+        public UnitDimention(char symbol, string definition, string baseUnit)
         {
             Symbol = symbol;
             Definition = definition;
@@ -13,6 +13,6 @@
         
         public string Definition { get; set; }
 
-        public UOM BaseUnit { get; set; }
+        public string BaseUnit { get; set; }
     }
 }

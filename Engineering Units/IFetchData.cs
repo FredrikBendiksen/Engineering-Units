@@ -6,9 +6,12 @@ using System.Threading.Tasks;
 
 namespace Engineering_Units
 {
-    public interface IFetchData
+    internal interface IFetchData
     {
-        public List<string> GetQuantClass();
+        public UOM GetUOM(string UOMName);
+        public List<UOM> GetUOMsForUnitDimention(string unitDimention);
+        public List<QuantityClass> GetAllQuantityClasses();
+        public List<UOM> GetUOMsForQuantityClass(string quantityClass);
     }
 
 }

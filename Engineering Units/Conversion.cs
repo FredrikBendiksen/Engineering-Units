@@ -8,7 +8,7 @@ namespace Engineering_Units
 {
     internal class Conversion
     {
-        public static (decimal result, UOM? uom) Convert(decimal value, UOM? from, UOM? to)
+        internal static (decimal result, UOM? uom) Convert(decimal value, UOM? from, UOM? to)
         {
             if (from == null || to == null)
             {

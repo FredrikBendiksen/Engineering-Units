@@ -16,6 +16,13 @@ namespace Engineering_Units
         public string Annotation { get; set; }
         
         public ConversionParameters? ConversionParameters { get; set; }
+
+        public DateTime? LastUsed { get; set; }
+
+        public void UpdateLastUsed()
+        {
+            LastUsed = DateTime.Now;
+        }
     }
     
     internal class ConversionParameters

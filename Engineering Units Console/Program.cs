@@ -21,6 +21,6 @@ while (true)
     else
     {
         (decimal convertedValue, string name, string annoation) = iEngineeringUnits.Convert(val, from, to);
-        Console.WriteLine($"{convertedValue} {name} {annoation}");
+        Console.WriteLine($"{convertedValue} {name} {annoation}\n");
     }
 }
