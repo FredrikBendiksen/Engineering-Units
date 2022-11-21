@@ -28,7 +28,7 @@ namespace Engineering_Units.Data
             return data;
         }
 
-        public static UOM GetUOM(string UOMName)
+        public static UOM? GetUOM(string UOMName)
         {
             return data.GetUOM(UOMName);
         }
@@ -74,7 +74,7 @@ namespace Engineering_Units.Data
     internal class XMLReader : IFetchData
     {
         // Reads XML-file
-        public UOM GetUOM(string UOMName)
+        public UOM? GetUOM(string UOMName)
         {
             throw new NotImplementedException();
         }

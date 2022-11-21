@@ -15,42 +15,30 @@ namespace Engineering_Units.Data
             {
                 Name= "metre",
                 Annotation= "m",
-                QuantityClass = new List<QuantityClass>(){
-                    new QuantityClass()
-                    {
-                        Name = "length",
-                        UnitNames= new List<string> { "metre" }
-                    }
+                QuantityClasses = new List<QuantityClass>(){
+                    new QuantityClass("length", new List<string> { "metre" } )
                 }
             },
             new UOM
             {
                 Name= "kilometre",
                 Annotation= "km",
-                QuantityClass = new List<QuantityClass>(){
-                    new QuantityClass()
-                    {
-                        Name = "length",
-                        UnitNames= new List<string> { "metre" }
-                    }
+                QuantityClasses = new List<QuantityClass>(){
+                    new QuantityClass("length", new List<string> { "metre" })
                 },
                 ConversionParameters = new ConversionParameters("metre", 0, 1000, 1, 0)
             }
         };
 
-        public UOM GetUOM(string UOMName)
+        public UOM? GetUOM(string UOMName)
         {
             UOM? uom = uoms.FirstOrDefault(x => x.Name == UOMName || x.Annotation == UOMName);
             uom ??= new UOM()
             {
                 Name = "test",
                 Annotation = "t",
-                QuantityClass = new List<QuantityClass>(){
-                    new QuantityClass()
-                    {
-                        Name = "length",
-                        UnitNames= new List<string> { "metre" }
-                    }
+                QuantityClasses = new List<QuantityClass>(){
+                    new QuantityClass("length", new List < string > { "metre" })
                 },
                 ConversionParameters = new ConversionParameters("metre", 0, 1000, 1, 0)
             };

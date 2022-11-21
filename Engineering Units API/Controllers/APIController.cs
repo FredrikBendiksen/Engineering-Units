@@ -26,5 +26,28 @@ namespace Engineering_Units_API.Controllers
             });
             return json;
         }
+
+        [HttpPost("CreateAlias")]
+        public JsonResult CreateAlias([FromBody]string uomName, string newAlias)
+        {
+            bool result = engineeringUnits.CreateAlias(uomName, newAlias);
+            return new JsonResult(result);
+        }
+        /*
+        public List<(char symbol, string definition, string baseUnit)> GetUnitDimensions();
+
+        public List<(string name, string annotation)> GetUOMsForUnitDimension(string unitDimension);
+
+        public List<string> GetAllQuantityClasses();
+
+        public List<string> GetUOMsForQuantityClass(string quantityClass);
+
+        public List<string> GetAliasesForUOMName(string uomName);
+
+        public bool CreateSubQuantityClass(string name, List<string> uomNames);
+
+        public bool CreateUOM(string name, string annotation, List<string> quantityClasses, string baseUOM,
+            decimal converstionParameterA, decimal converstionParameterB, decimal converstionParameterC, decimal converstionParameterD);
+        */
     }
 }

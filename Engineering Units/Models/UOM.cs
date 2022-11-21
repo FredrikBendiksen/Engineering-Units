@@ -9,11 +9,19 @@ namespace Engineering_Units.Models
 {
     internal class UOM
     {
+        public UOM(string name, string annotation, List<QuantityClass> quantityClasses, ConversionParameters conversionParameters)
+        {
+            Name = name;
+            Annotation = annotation;
+            QuantityClasses = quantityClasses;
+            ConversionParameters = conversionParameters;
+        }
+
         public string Name { get; set; }
 
-        public List<QuantityClass> QuantityClass { get; set; }
-
         public string Annotation { get; set; }
+
+        public List<QuantityClass> QuantityClasses { get; set; }
 
         public ConversionParameters? ConversionParameters { get; set; }
 
