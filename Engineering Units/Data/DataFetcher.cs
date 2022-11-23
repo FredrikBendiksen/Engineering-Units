@@ -10,7 +10,7 @@ namespace Engineering_Units.Data
 {
     internal static class DataFetcher
     {
-        readonly static string datasource = "XML";
+        readonly static string datasource = "mock";
         static readonly IFetchData data = CreateFetchData();
 
         public static IFetchData CreateFetchData()

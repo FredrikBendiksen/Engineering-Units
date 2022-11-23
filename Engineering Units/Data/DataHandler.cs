@@ -9,11 +9,19 @@ namespace Engineering_Units.Data
 {
     internal class DataHandler
     {
-        const int lastUsedUOMsToStore = 10;
-        List<UOM> LastUsedUOMs = new();
-        List<UOM> CustomUnits = new();
-        List<QuantityClass> SubQuantityClasses = new();
-        List<Alias> Aliases = new();
+        private const int lastUsedUOMsToStore = 10;
+        private List<UOM> LastUsedUOMs;
+        private List<UOM> CustomUnits;
+        private List<QuantityClass> SubQuantityClasses;
+        private List<Alias> Aliases;
+
+        public DataHandler()
+        {
+            LastUsedUOMs = new List<UOM>();
+            CustomUnits = new List<UOM>();
+            SubQuantityClasses = new List<QuantityClass>();
+            Aliases = new List<Alias>();
+        }
 
         private UOM? GetUOMFromMemory(string UOMName)
         {
@@ -49,6 +57,13 @@ namespace Engineering_Units.Data
             {
                 return null;
             }
+
+            Alias? alias = Aliases.FirstOrDefault(a => a.AliasName == UOMName);
+            if (alias != null)
+            {
+                UOMName = alias.UOMName;
+            }
+
             UOM? uom = GetUOMFromMemory(UOMName);
             if (uom == null)
             {
@@ -112,7 +127,7 @@ namespace Engineering_Units.Data
 
         internal bool CreateSubQuantityClass(QuantityClass newQuantityClass)
         {
-            if (string.IsNullOrEmpty(newQuantityClass?.Name) || newQuantityClass.UnitNames.Count == 0)
+            if (string.IsNullOrEmpty(newQuantityClass?.Name) || newQuantityClass.UnitNames == null || newQuantityClass.UnitNames.Count == 0)
             {
                 // Skip if any not all parameters are set
                 return false;

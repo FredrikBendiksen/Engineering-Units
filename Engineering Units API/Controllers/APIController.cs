@@ -28,7 +28,7 @@ namespace Engineering_Units_API.Controllers
         }
 
         [HttpPost("CreateAlias")]
-        public JsonResult CreateAlias([FromBody]string uomName, string newAlias)
+        public JsonResult CreateAlias(string uomName, string newAlias)
         {
             bool result = engineeringUnits.CreateAlias(uomName, newAlias);
             return new JsonResult(result);

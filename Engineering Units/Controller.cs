@@ -10,7 +10,12 @@ namespace Engineering_Units;
 
 internal class Controller : IEngineeringUnits
 {
-    private readonly DataHandler _dataHandler = new DataHandler();
+    private readonly DataHandler _dataHandler;
+
+    public Controller()
+    {
+        _dataHandler = new DataHandler();
+    }
 
     public (decimal, string, string) Convert(decimal value, string fromUOM, string toUOM)
     {
@@ -21,7 +26,7 @@ internal class Controller : IEngineeringUnits
 
         if (convertedUOM == null)
         {
-            return (0, "", "Invalid");
+            return (0, "Invalid", "Invalid");
         }
 
         return (convertedValue, convertedUOM.Name, convertedUOM.Annotation);

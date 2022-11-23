@@ -9,7 +9,7 @@ namespace Engineering_Units.Models
 {
     internal class UOM
     {
-        public UOM(string name, string annotation, List<QuantityClass> quantityClasses, ConversionParameters conversionParameters)
+        public UOM(string name, string annotation, List<QuantityClass> quantityClasses, ConversionParameters? conversionParameters)
         {
             Name = name;
             Annotation = annotation;
