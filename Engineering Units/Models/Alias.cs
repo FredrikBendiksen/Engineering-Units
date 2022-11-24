@@ -1,21 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace Engineering_Units.Models;
 
-namespace Engineering_Units.Models
+public class Alias
 {
-    internal class Alias
+    public Alias(string aliasName, string uomName)
     {
-        public Alias(string aliasName, string uomName)
-        {
-            AliasName = aliasName;
-            UOMName = uomName;
-        }
-
-        public string AliasName { get; set; }
-
-        public string UOMName { get; set; }
+        AliasName = aliasName;
+        UOMName = uomName;
     }
+
+    public string AliasName { get; set; }
+
+    public string UOMName { get; set; }
 }

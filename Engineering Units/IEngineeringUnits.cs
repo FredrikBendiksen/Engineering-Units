@@ -12,12 +12,12 @@ public interface IEngineeringUnits
     
     public List<string> GetAliasesForUOMName(string uomName);
     
-    public bool CreateAlias(string uomName, string newAlias);
+    public string? CreateAlias(string uomName, string newAlias);
     
     public (decimal val, string name, string annotation) Convert(decimal value, string fromUOM, string toUOM);
     
-    public bool CreateSubQuantityClass(string name, List<string> uomNames);
+    public string? CreateSubQuantityClass(string name, List<string> uomNames);
 
-    public bool CreateUOM(string name, string annotation, List<string> quantityClasses, string baseUOM,
+    public string? CreateUOM(string name, string annotation, List<string> quantityClasses, string baseUOM,
         decimal conversionParameterA, decimal conversionParameterB, decimal conversionParameterC, decimal conversionParameterD);
 }

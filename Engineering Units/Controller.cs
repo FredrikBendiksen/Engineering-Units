@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Engineering_Units.Data;
+﻿using Engineering_Units.Data;
 using Engineering_Units.Models;
 
 namespace Engineering_Units;
@@ -12,9 +7,9 @@ internal class Controller : IEngineeringUnits
 {
     private readonly DataHandler _dataHandler;
 
-    public Controller()
+    public Controller(MemoryLists? memory = null)
     {
-        _dataHandler = new DataHandler();
+        _dataHandler = new DataHandler(memory);
     }
 
     public (decimal, string, string) Convert(decimal value, string fromUOM, string toUOM)
@@ -22,27 +17,27 @@ internal class Controller : IEngineeringUnits
         UOM? from = _dataHandler.GetUOM(fromUOM);
         UOM? to = _dataHandler.GetUOM(toUOM);
 
-        (decimal convertedValue, UOM? convertedUOM) = Conversion.Convert(value, from, to);
+        (decimal convertedValue, UOM? convertedUOM, string? errorMessage) = Conversion.Convert(value, from, to);
 
-        if (convertedUOM == null)
+        if (convertedUOM == null || errorMessage != null)
         {
-            return (0, "Invalid", "Invalid");
+            return (0, errorMessage ?? "", "Invalid");
         }
 
         return (convertedValue, convertedUOM.Name, convertedUOM.Annotation);
     }
 
-    public bool CreateAlias(string uomName, string newAlias)
+    public string? CreateAlias(string uomName, string newAlias)
     {
         return _dataHandler.CreateAlias(uomName, newAlias);
     }
 
-    public bool CreateSubQuantityClass(string name, List<string> uomNames)
+    public string? CreateSubQuantityClass(string name, List<string> uomNames)
     {
         return _dataHandler.CreateSubQuantityClass(new QuantityClass(name, uomNames));
     }
 
-    public bool CreateUOM(string name, string annotation, List<string> quantityClasses, string baseUOM, decimal conversionParameterA, decimal conversionParameterB, decimal conversionParameterC, decimal conversionParameterD)
+    public string? CreateUOM(string name, string annotation, List<string> quantityClasses, string baseUOM, decimal conversionParameterA, decimal conversionParameterB, decimal conversionParameterC, decimal conversionParameterD)
     {
         UOM newUOM = new UOM(name, annotation, quantityClasses.Select(qc => new QuantityClass(qc)).ToList(),
             new ConversionParameters(baseUOM, conversionParameterA, conversionParameterB, conversionParameterC, conversionParameterD));

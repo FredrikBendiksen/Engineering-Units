@@ -1,52 +1,44 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace Engineering_Units.Models;
 
-namespace Engineering_Units.Models
+public class UOM
 {
-    internal class UOM
+    public UOM(string name, string annotation, List<QuantityClass> quantityClasses, ConversionParameters? conversionParameters)
     {
-        public UOM(string name, string annotation, List<QuantityClass> quantityClasses, ConversionParameters? conversionParameters)
-        {
-            Name = name;
-            Annotation = annotation;
-            QuantityClasses = quantityClasses;
-            ConversionParameters = conversionParameters;
-        }
-
-        public string Name { get; set; }
-
-        public string Annotation { get; set; }
-
-        public List<QuantityClass> QuantityClasses { get; set; }
-
-        public ConversionParameters? ConversionParameters { get; set; }
-
-        public DateTime? LastUsed { get; set; }
-
-        public void UpdateLastUsed()
-        {
-            LastUsed = DateTime.Now;
-        }
+        Name = name;
+        Annotation = annotation;
+        QuantityClasses = quantityClasses;
+        ConversionParameters = conversionParameters;
     }
 
-    internal class ConversionParameters
+    public string Name { get; set; }
+
+    public string Annotation { get; set; }
+
+    public List<QuantityClass> QuantityClasses { get; set; }
+
+    public ConversionParameters? ConversionParameters { get; set; }
+
+    public DateTime? LastUsed { get; set; }
+
+    public void UpdateLastUsed()
     {
-        public ConversionParameters(string baseUnit, decimal a, decimal b, decimal c, decimal d)
-        {
-            BaseUnit = baseUnit;
-            A = a;
-            B = b;
-            C = c;
-            D = d;
-        }
-        public string BaseUnit { get; set; }
-        public decimal A { get; set; }
-        public decimal B { get; set; }
-        public decimal C { get; set; }
-        public decimal D { get; set; }
+        LastUsed = DateTime.Now;
     }
+}
+
+public class ConversionParameters
+{
+    public ConversionParameters(string baseUnit, decimal a, decimal b, decimal c, decimal d)
+    {
+        BaseUnit = baseUnit;
+        A = a;
+        B = b;
+        C = c;
+        D = d;
+    }
+    public string BaseUnit { get; set; }
+    public decimal A { get; set; }
+    public decimal B { get; set; }
+    public decimal C { get; set; }
+    public decimal D { get; set; }
 }
