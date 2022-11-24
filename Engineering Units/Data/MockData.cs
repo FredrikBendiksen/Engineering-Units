@@ -23,17 +23,21 @@ namespace Engineering_Units.Data
 
         public List<QuantityClass> GetAllQuantityClasses()
         {
-            throw new NotImplementedException();
+            return new List<QuantityClass>()
+            {
+                new QuantityClass("length"),
+                new QuantityClass("weight")
+            };
         }
 
         public List<UOM> GetUOMsForUnitDimention(string unitDimention)
         {
-            throw new NotImplementedException();
+            return uoms;
         }
 
         public List<UOM> GetUOMsForQuantityClass(string quantityClass)
         {
-            throw new NotImplementedException();
+            return uoms;
         }
     }
 

@@ -8,7 +8,7 @@ public interface IEngineeringUnits
     
     public List<string> GetAllQuantityClasses();
     
-    public List<string> GetUOMsForQuantityClass(string quantityClass);
+    public List<(string name, string annotation)> GetUOMsForQuantityClass(string quantityClass);
     
     public List<string> GetAliasesForUOMName(string uomName);
     
@@ -19,5 +19,5 @@ public interface IEngineeringUnits
     public bool CreateSubQuantityClass(string name, List<string> uomNames);
 
     public bool CreateUOM(string name, string annotation, List<string> quantityClasses, string baseUOM,
-        decimal converstionParameterA, decimal converstionParameterB, decimal converstionParameterC, decimal converstionParameterD);
+        decimal conversionParameterA, decimal conversionParameterB, decimal conversionParameterC, decimal conversionParameterD);
 }

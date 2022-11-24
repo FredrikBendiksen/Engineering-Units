@@ -4,18 +4,18 @@ using Microsoft.AspNetCore.Mvc;
 namespace Engineering_Units_API.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
     public class APIController : ControllerBase
     {
-        readonly IEngineeringUnits engineeringUnits;
+        IEngineeringUnits engineeringUnits;
 
         public APIController()
         {
             engineeringUnits = Factoring.GetEngineeringUnits();
+
         }
 
         [HttpGet("Convert")]
-        public JsonResult Convert(decimal value, string fromUOM, string toUOM)
+        public IActionResult Convert(decimal value, string fromUOM, string toUOM)
         {
             (decimal val, string uom, string annotation) = engineeringUnits.Convert(value, fromUOM, toUOM);
             var json = new JsonResult(new
@@ -28,26 +28,61 @@ namespace Engineering_Units_API.Controllers
         }
 
         [HttpPost("CreateAlias")]
-        public JsonResult CreateAlias(string uomName, string newAlias)
+        public IActionResult CreateAlias(string uomName, string newAlias)
         {
             bool result = engineeringUnits.CreateAlias(uomName, newAlias);
             return new JsonResult(result);
         }
-        /*
-        public List<(char symbol, string definition, string baseUnit)> GetUnitDimensions();
 
-        public List<(string name, string annotation)> GetUOMsForUnitDimension(string unitDimension);
+        [HttpGet("AliasesForUOMName/{uomName}")]
+        public IActionResult GetAliasesForUOMName(string uomName)
+        {
+            List<string> result = engineeringUnits.GetAliasesForUOMName(uomName);
+            return new JsonResult(result);
+        }
 
-        public List<string> GetAllQuantityClasses();
+        [HttpGet("UnitDimensions")]
+        public IActionResult GetUnitDimensions()
+        {
+            var result = engineeringUnits.GetUnitDimensions().Select(x => new {x.symbol, x.definition, x.baseUnit}).ToList();
+            return new JsonResult(result);
+        }
 
-        public List<string> GetUOMsForQuantityClass(string quantityClass);
+        [HttpGet("UOMsForUnitDimension/{unitDimension}")]
+        public IActionResult GetUOMsForUnitDimension(string unitDimension)
+        {
+            var result = engineeringUnits.GetUOMsForUnitDimension(unitDimension).Select(x => new {x.name, x.annotation}).ToList();
+            return new JsonResult(result);
+        }
 
-        public List<string> GetAliasesForUOMName(string uomName);
+        [HttpGet("QuantityClasses")]
+        public IActionResult GetAllQuantityClasses()
+        {
+            List<string> result = engineeringUnits.GetAllQuantityClasses();
+            return new JsonResult(result);
+        }
 
-        public bool CreateSubQuantityClass(string name, List<string> uomNames);
+        [HttpGet("UOMsForQuantityClass/{quantityClass}")]
+        public IActionResult GetUOMsForQuantityClass(string quantityClass)
+        {
+            var result = engineeringUnits.GetUOMsForQuantityClass(quantityClass).Select(x => new { x.name, x.annotation }).ToList();
+            return new JsonResult(result);
+        }
 
-        public bool CreateUOM(string name, string annotation, List<string> quantityClasses, string baseUOM,
-            decimal converstionParameterA, decimal converstionParameterB, decimal converstionParameterC, decimal converstionParameterD);
-        */
+        [HttpPost("CreateSubQuantityClass")]
+        public IActionResult CreateSubQuantityClass(string name, string[] uomNames)
+        {
+            bool result = engineeringUnits.CreateSubQuantityClass(name, uomNames.ToList());
+            return new JsonResult(result);
+        }
+
+        [HttpPost("CreateUOM")]
+        public IActionResult CreateUOM(string name, string annotation, string baseUOM,
+            decimal conversionParameterA, decimal conversionParameterB, decimal conversionParameterC, decimal conversionParameterD, string[] quantityClasses)
+        {
+            bool result = engineeringUnits.CreateUOM(name, annotation, quantityClasses.ToList(), baseUOM, conversionParameterA, conversionParameterB, conversionParameterC, conversionParameterD);
+            return new JsonResult(result);
+        }
+
     }
 }

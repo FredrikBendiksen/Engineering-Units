@@ -15,6 +15,11 @@ namespace Engineering_Units
             {
                 return (0, null);
             }
+            if((from.ConversionParameters?.BaseUnit ?? from.Name) != (to.ConversionParameters?.BaseUnit ?? to.Name))
+            {
+                // Check for same BaseUnit. No ConversionParameters means baseUnit
+                return (0, null);
+            }
 
             decimal baseValue;
             if (from.ConversionParameters == null)

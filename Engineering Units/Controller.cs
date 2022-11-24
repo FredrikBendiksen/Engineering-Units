@@ -42,10 +42,10 @@ internal class Controller : IEngineeringUnits
         return _dataHandler.CreateSubQuantityClass(new QuantityClass(name, uomNames));
     }
 
-    public bool CreateUOM(string name, string annotation, List<string> quantityClasses, string baseUOM, decimal converstionParameterA, decimal converstionParameterB, decimal converstionParameterC, decimal converstionParameterD)
+    public bool CreateUOM(string name, string annotation, List<string> quantityClasses, string baseUOM, decimal conversionParameterA, decimal conversionParameterB, decimal conversionParameterC, decimal conversionParameterD)
     {
         UOM newUOM = new UOM(name, annotation, quantityClasses.Select(qc => new QuantityClass(qc)).ToList(),
-            new ConversionParameters(baseUOM, converstionParameterA, converstionParameterB, converstionParameterC, converstionParameterD));
+            new ConversionParameters(baseUOM, conversionParameterA, conversionParameterB, conversionParameterC, conversionParameterD));
 
         return _dataHandler.CreateUOM(newUOM);
     }
@@ -62,12 +62,14 @@ internal class Controller : IEngineeringUnits
 
     public List<(char symbol, string definition, string baseUnit)> GetUnitDimensions()
     {
-        return DataHandler.GetUnitDimentions().Select(x => (x.Symbol, x.Definition, x.BaseUnit )).ToList();
+        List<UnitDimention> unitDimentions = DataHandler.GetUnitDimentions();
+        var tuples = unitDimentions.Select(x => (x.Symbol, x.Definition, x.BaseUnit)).ToList();
+        return tuples;
     }
 
-    public List<string> GetUOMsForQuantityClass(string quantityClass)
+    public List<(string name, string annotation)> GetUOMsForQuantityClass(string quantityClass)
     {
-        return _dataHandler.GetUOMsForQuantityClass(quantityClass).Select(x => x.Name).ToList();
+        return _dataHandler.GetUOMsForQuantityClass(quantityClass).Select(x => (x.Name, x.Annotation)).ToList();
     }
 
     public List<(string name, string annotation)> GetUOMsForUnitDimension(string unitDimension)
