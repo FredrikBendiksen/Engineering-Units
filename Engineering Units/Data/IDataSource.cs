@@ -2,7 +2,7 @@
 
 namespace Engineering_Units.Data;
 
-internal interface IFetchData
+internal interface IDataSource
 {
     public UOM? GetUOM(string UOMName);
     public List<UOM> GetUOMsForUnitDimention(string unitDimention);

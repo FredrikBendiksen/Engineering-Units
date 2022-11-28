@@ -17,7 +17,7 @@ internal class Controller : IEngineeringUnits
         UOM? from = _dataHandler.GetUOM(fromUOM);
         UOM? to = _dataHandler.GetUOM(toUOM);
 
-        (decimal convertedValue, UOM? convertedUOM, string? errorMessage) = Conversion.Convert(value, from, to);
+        (decimal convertedValue, UOM? convertedUOM, string? errorMessage) = Convertor.Convert(value, from, to);
 
         if (convertedUOM == null || errorMessage != null)
         {

@@ -40,6 +40,11 @@ internal class DataHandler
         _memory.LastUsedUOMs.Add(uom);
     }
 
+    private Alias? GetAlias(string alias)
+    {
+        return _memory.Aliases.FirstOrDefault(a => a.AliasName == alias); ;
+    }
+
     internal UOM? GetUOM(string UOMName)
     {
         if (string.IsNullOrEmpty(UOMName))
@@ -47,7 +52,7 @@ internal class DataHandler
             return null;
         }
 
-        Alias? alias = _memory.Aliases.FirstOrDefault(a => a.AliasName == UOMName);
+        Alias? alias = GetAlias(UOMName);
         if (alias != null)
         {
             UOMName = alias.UOMName;

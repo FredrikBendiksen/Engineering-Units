@@ -5,11 +5,11 @@ namespace Engineering_Units.Data;
 internal static class DataFetcher
 {
     readonly static string datasource = "mock";
-    static readonly IFetchData data = CreateFetchData();
+    static readonly IDataSource data = CreateFetchData();
 
-    public static IFetchData CreateFetchData()
+    public static IDataSource CreateFetchData()
     {
-        IFetchData data;
+        IDataSource data;
         if (datasource == "XML")
         {
             data = new XMLReader();
@@ -65,7 +65,7 @@ internal static class DataFetcher
 }
 
 
-internal class XMLReader : IFetchData
+internal class XMLReader : IDataSource
 {
     // Reads XML-file
     public UOM? GetUOM(string UOMName)

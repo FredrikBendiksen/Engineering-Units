@@ -2,7 +2,7 @@
 
 namespace Engineering_Units;
 
-internal class Conversion
+internal static class Convertor
 {
     internal static (decimal result, UOM? uom, string? errorMessage) Convert(decimal value, UOM? from, UOM? to)
     {

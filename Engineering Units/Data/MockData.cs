@@ -2,7 +2,7 @@
 
 namespace Engineering_Units.Data;
 
-internal class MockData : IFetchData
+internal class MockData : IDataSource
 {
     public List<UOM> uoms = new()
     {
