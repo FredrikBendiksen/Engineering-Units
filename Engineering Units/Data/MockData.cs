@@ -25,11 +25,6 @@ internal class MockData : IDataSource
         };
     }
 
-    public List<UOM> GetUOMsForUnitDimention(string unitDimention)
-    {
-        return uoms;
-    }
-
     public List<UOM> GetUOMsForQuantityClass(string quantityClass)
     {
         return uoms;

@@ -1,8 +1,8 @@
 ﻿namespace Engineering_Units.Models;
 
-internal class UnitDimention
+internal class UnitDimension
 {
-    public UnitDimention(char symbol, string definition, string baseUnit)
+    public UnitDimension(char symbol, string definition, string baseUnit)
     {
         Symbol = symbol;
         Definition = definition;

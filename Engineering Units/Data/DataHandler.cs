@@ -71,14 +71,14 @@ internal class DataHandler
         return uom;
     }
 
-    internal static List<UnitDimention> GetUnitDimentions()
+    internal static List<UnitDimension> GetUnitDimentions()
     {
-        return DataFetcher.GetUnitDimentions();
+        return DataFetcher.GetUnitDimensions();
     }
 
-    internal static List<UOM> GetUOMsForUnitDimension(string unitDimention)
+    internal static UnitDimension? GetUnitDimension(string searchString)
     {
-        return DataFetcher.GetUOMsForUnitDimention(unitDimention);
+        return DataFetcher.GetUnitDimension(searchString);
     }
 
     internal List<QuantityClass> GetAllQuantityClasses()

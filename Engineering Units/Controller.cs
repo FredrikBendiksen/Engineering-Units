@@ -57,7 +57,7 @@ internal class Controller : IEngineeringUnits
 
     public List<(char symbol, string definition, string baseUnit)> GetUnitDimensions()
     {
-        List<UnitDimention> unitDimentions = DataHandler.GetUnitDimentions();
+        List<UnitDimension> unitDimentions = DataHandler.GetUnitDimentions();
         var tuples = unitDimentions.Select(x => (x.Symbol, x.Definition, x.BaseUnit)).ToList();
         return tuples;
     }
@@ -67,8 +67,10 @@ internal class Controller : IEngineeringUnits
         return _dataHandler.GetUOMsForQuantityClass(quantityClass).Select(x => (x.Name, x.Annotation)).ToList();
     }
 
-    public List<(string name, string annotation)> GetUOMsForUnitDimension(string unitDimension)
+    public (char symbol, string definition, string baseUnit) GetUnitDimension(string search)
     {
-        return DataHandler.GetUOMsForUnitDimension(unitDimension).Select(x => (x.Name, x.Annotation)).ToList();
+        UnitDimension? unitDimension = DataHandler.GetUnitDimension(search);
+        unitDimension ??= new UnitDimension(' ', "No unit dimension found", "");
+        return (unitDimension.Symbol, unitDimension.Definition, unitDimension.BaseUnit);
     }
 }

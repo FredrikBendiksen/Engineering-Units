@@ -49,11 +49,16 @@ public class APIController : ControllerBase
         return new JsonResult(result);
     }
 
-    [HttpGet("UOMsForUnitDimension/{unitDimension}")]
-    public IActionResult GetUOMsForUnitDimension(string unitDimension)
+    [HttpGet("UnitDimensions/{unitDimension}")]
+    public IActionResult GetUnitDimension(string unitDimension)
     {
-        var result = engineeringUnits.GetUOMsForUnitDimension(unitDimension).Select(x => new {x.name, x.annotation}).ToList();
-        return new JsonResult(result);
+        var unitDimensionFound = engineeringUnits.GetUnitDimension(unitDimension);
+        return new JsonResult(new
+        {
+            unitDimensionFound.symbol,
+            unitDimensionFound.definition,
+            unitDimensionFound.baseUnit,
+        });
     }
 
     [HttpGet("QuantityClasses")]

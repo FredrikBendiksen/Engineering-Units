@@ -32,34 +32,34 @@ internal static class DataFetcher
         return data.GetAllQuantityClasses();
     }
 
-    public static List<UnitDimention> GetUnitDimentions()
+    public static List<UnitDimension> GetUnitDimensions()
     {
-        return UnitDimentions;
+        return UnitDimensions;
     }
 
-    public static List<UOM> GetUOMsForUnitDimention(string unitDimention)
+    public static UnitDimension? GetUnitDimension(string searchString)
     {
-        return data.GetUOMsForUnitDimention(unitDimention);
+        return UnitDimensions.FirstOrDefault(x => x.Symbol.ToString() == searchString.ToUpper() || x.Definition == searchString.ToLower());
     }
 
     public static List<UOM> GetUOMsForQuantityClass(string quantityClass)
     {
         return data.GetUOMsForQuantityClass(quantityClass);
     }
-    private static List<UnitDimention> UnitDimentions
+    private static List<UnitDimension> UnitDimensions
     {
-        get => new List<UnitDimention>()
+        get => new List<UnitDimension>()
         {
-            new UnitDimention('A', "angle", "radian"),
-            new UnitDimention('D', "temperature difference", "kelvin"),
-            new UnitDimention('I', "electrical current", "ampere"),
-            new UnitDimention('J', "luminous intensity", "candela"),
-            new UnitDimention('K', "thermodynamic temperature", "kelvin"),
-            new UnitDimention('L', "length", "meter"),
-            new UnitDimention('M', "mass", "kilogram"),
-            new UnitDimention('N', "amount of substance", "mole"),
-            new UnitDimention('S', "temperature solid angle", "steradian"),
-            new UnitDimention('T', "time", "second"),
+            new UnitDimension('A', "angle", "radian"),
+            new UnitDimension('D', "temperature difference", "kelvin"),
+            new UnitDimension('I', "electrical current", "ampere"),
+            new UnitDimension('J', "luminous intensity", "candela"),
+            new UnitDimension('K', "thermodynamic temperature", "kelvin"),
+            new UnitDimension('L', "length", "meter"),
+            new UnitDimension('M', "mass", "kilogram"),
+            new UnitDimension('N', "amount of substance", "mole"),
+            new UnitDimension('S', "temperature solid angle", "steradian"),
+            new UnitDimension('T', "time", "second"),
         };
     }
 }
@@ -74,11 +74,6 @@ internal class XMLReader : IDataSource
     }
 
     public List<QuantityClass> GetAllQuantityClasses()
-    {
-        throw new NotImplementedException();
-    }
-
-    public List<UOM> GetUOMsForUnitDimention(string unitDimention)
     {
         throw new NotImplementedException();
     }

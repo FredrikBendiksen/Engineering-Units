@@ -4,7 +4,7 @@ public interface IEngineeringUnits
 {
     public List<(char symbol, string definition, string baseUnit)> GetUnitDimensions();
     
-    public List<(string name, string annotation)> GetUOMsForUnitDimension(string unitDimension);
+    public (char symbol, string definition, string baseUnit) GetUnitDimension(string searchString);
     
     public List<string> GetAllQuantityClasses();
     
