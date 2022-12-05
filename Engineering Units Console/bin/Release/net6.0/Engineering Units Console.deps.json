@@ -1,0 +1,33 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v6.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v6.0": {
+      "Engineering Units Console/1.0.0": {
+        "runtime": {
+          "Engineering Units Console.dll": {}
+        }
+      },
+      "Engineering Units/1.0.0": {
+        "runtime": {
+          "Engineering Units.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Engineering Units Console/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Engineering Units/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}
