@@ -2,6 +2,7 @@
 
 public class UOM
 {
+    public UOM() { }
     public UOM(string name, string annotation, List<QuantityClass> quantityClasses, ConversionParameters? conversionParameters)
     {
         Name = name;
