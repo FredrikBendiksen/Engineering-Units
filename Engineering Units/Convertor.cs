@@ -10,7 +10,7 @@ internal static class Convertor
         {
             return (0, null, "UOMs not found");
         }
-        if((from.ConversionParameters?.BaseUnit ?? from.Name) != (to.ConversionParameters?.BaseUnit ?? to.Name))
+        if((from.ConversionParameters?.BaseUnit ?? from.Annotation) != (to.ConversionParameters?.BaseUnit ?? to.Annotation))
         {
             // Check for same BaseUnit. No ConversionParameters means baseUnit
             return (0, null, "UOMs are not of same base-unit");

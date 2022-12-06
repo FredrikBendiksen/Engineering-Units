@@ -1,10 +1,15 @@
 ﻿using Engineering_Units.Models;
+using System.Collections.Generic;
+using System.Numerics;
+using System.Xml;
+
+
 
 namespace Engineering_Units.Data;
 
 internal static class DataFetcher
 {
-    readonly static string datasource = "mock";
+    readonly static string datasource = "XML";
     static readonly IDataSource data = CreateFetchData();
 
     public static IDataSource CreateFetchData()
@@ -68,18 +73,154 @@ internal static class DataFetcher
 internal class XMLReader : IDataSource
 {
     // Reads XML-file
+    private readonly string xmlPath = GetXMLPath();
+    private static string GetXMLPath()
+    {
+        string solutiondir = Directory.GetParent(Directory.GetCurrentDirectory())?.FullName ?? "";
+        string xmlPath = solutiondir + "\\Engineering Units\\poscUnits.xml";
+        return xmlPath;
+    }
     public UOM? GetUOM(string UOMName)
     {
-        throw new NotImplementedException();
+        UOM uom = new();
+        using (XmlReader xmlReader = XmlReader.Create(xmlPath))
+        {
+            decimal A = 0;
+            decimal B = 0;
+            decimal C = 1;
+            decimal D = 0;
+            string baseunit = "";
+
+            while (xmlReader.Read())  //reader.Read() returns the Boolean value indicating whether there is a XML statement or not.
+            {
+                if (xmlReader.IsStartElement()) //If Yes, then we try to check if the current statement contains a starting element or not
+                {
+
+                    if ("Name" == xmlReader.Name.ToString())
+                    {
+                        string name = xmlReader.ReadString();
+                        if (name == UOMName)
+                        {
+                            uom.Name = name;
+
+                            if (xmlReader.ReadToNextSibling("CatalogSymbol"))
+                            {
+                                string catalog = xmlReader.ReadString();
+                                uom.Annotation = catalog;
+                            }
+                            if (xmlReader.ReadToNextSibling("ConversionToBaseUnit"))
+                            { 
+                                    baseunit = xmlReader.GetAttribute("baseUnit") ?? ""; 
+                            }
+                            else {  
+                                return uom;
+                            }
+                            var subtreeReader = xmlReader.ReadSubtree();
+                            subtreeReader.Read();
+
+                            while (subtreeReader.Name.Contains("ConversionToBaseUnit") || subtreeReader.Name == "")
+                            {
+                                subtreeReader.Read();
+                            }
+
+                            if (subtreeReader.Name.Contains("Factor"))
+                            {
+                                B = xmlReader.ReadElementContentAsDecimal();   
+                            }
+
+
+                            else if (subtreeReader.Name.Contains("Fraction"))
+                            {
+                                xmlReader.ReadToDescendant("Numerator");
+                                B = xmlReader.ReadElementContentAsDecimal();
+                                xmlReader.ReadToNextSibling("Denominator");
+                                C = xmlReader.ReadElementContentAsDecimal();
+                            }
+                            else if (subtreeReader.Name.Contains("Formula"))
+                            {
+                                xmlReader.ReadToDescendant("A");
+                                A = xmlReader.ReadElementContentAsDecimal();
+                                xmlReader.ReadToNextSibling("B");
+                                B = xmlReader.ReadElementContentAsDecimal();
+                                xmlReader.ReadToNextSibling("C");
+                                C = xmlReader.ReadElementContentAsDecimal();
+                                xmlReader.ReadToNextSibling("D");
+                                D = xmlReader.ReadElementContentAsDecimal();  
+
+                            }
+
+                            subtreeReader.Close();
+                        }
+                    }
+                }
+            }
+            uom.ConversionParameters = new ConversionParameters(baseunit, A, B, C, D);
+
+        }
+        return uom;
     }
 
     public List<QuantityClass> GetAllQuantityClasses()
     {
-        throw new NotImplementedException();
+        List<QuantityClass> qclass = new List<QuantityClass>();
+        List<string> qlist = new List<string>();
+        using (XmlReader xmlReader = XmlReader.Create(xmlPath))
+        {
+            
+            while (xmlReader.Read())  //reader.Read() returns the Boolean value indicating whether there is a XML statement or not.
+            {
+                if (xmlReader.IsStartElement() && xmlReader.Name.ToString()=="QuantityType")
+                {
+                       qlist.Add(xmlReader.ReadString());
+                    
+                }
+            }
+            qclass=qlist.Distinct().Select(q=>new QuantityClass(q)).ToList();
+
+        }
+
+
+        return qclass;
     }
 
     public List<UOM> GetUOMsForQuantityClass(string quantityClass)
-    {
-        throw new NotImplementedException();
+    {  
+        List<UOM> uoms = new List<UOM>();
+        using (XmlReader xmlReader = XmlReader.Create(xmlPath))
+        {
+            
+            while (xmlReader.Read())  //reader.Read() returns the Boolean value indicating whether there is a XML statement or not.
+            {
+                if (xmlReader.IsStartElement()) //If Yes, then we try to check if the current statement contains a starting element or not
+                {
+                    string annotation = "";
+                    if ("UnitsOfMeasure" == xmlReader.Name.ToString())
+                    {
+                        annotation = xmlReader.GetAttribute("annotation")??"";
+                    }
+
+                    if ("Name" == xmlReader.Name.ToString())
+                    {
+                        string name = xmlReader.ReadString();
+
+
+                        while (xmlReader.ReadToNextSibling("QuantityType") == true)
+                        {
+                            string quantityType = xmlReader.ReadElementContentAsString();
+
+                            if (quantityType == quantityClass)
+                            {
+                                uoms.Add(new UOM(name, annotation, new List<QuantityClass>(), null));
+
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return uoms;
+
     }
 }
+ 
+
