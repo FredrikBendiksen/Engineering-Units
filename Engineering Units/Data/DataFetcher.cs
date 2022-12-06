@@ -86,7 +86,7 @@ internal class XMLReader : IDataSource
         using (XmlReader xmlReader = XmlReader.Create(xmlPath))
         {
             decimal A = 0;
-            decimal B = 0;
+            decimal B = 1;
             decimal C = 1;
             decimal D = 0;
             string baseunit = "";
@@ -95,63 +95,76 @@ internal class XMLReader : IDataSource
             {
                 if (xmlReader.IsStartElement()) //If Yes, then we try to check if the current statement contains a starting element or not
                 {
-
-                    if ("Name" == xmlReader.Name.ToString())
+                    if (xmlReader.Name.ToString() == "UnitOfMeasure")
                     {
-                        string name = xmlReader.ReadString();
-                        if (name == UOMName)
+                        // Check if annotation match with search string
+                        string curAnnotation = xmlReader.GetAttribute("annotation") ?? "";
+                        if (curAnnotation == UOMName)
                         {
-                            uom.Name = name;
-
-                            if (xmlReader.ReadToNextSibling("CatalogSymbol"))
-                            {
-                                string catalog = xmlReader.ReadString();
-                                uom.Annotation = catalog;
-                            }
-                            if (xmlReader.ReadToNextSibling("ConversionToBaseUnit"))
-                            { 
-                                    baseunit = xmlReader.GetAttribute("baseUnit") ?? ""; 
-                            }
-                            else {  
-                                return uom;
-                            }
-                            var subtreeReader = xmlReader.ReadSubtree();
-                            subtreeReader.Read();
-
-                            while (subtreeReader.Name.Contains("ConversionToBaseUnit") || subtreeReader.Name == "")
-                            {
-                                subtreeReader.Read();
-                            }
-
-                            if (subtreeReader.Name.Contains("Factor"))
-                            {
-                                B = xmlReader.ReadElementContentAsDecimal();   
-                            }
-
-
-                            else if (subtreeReader.Name.Contains("Fraction"))
-                            {
-                                xmlReader.ReadToDescendant("Numerator");
-                                B = xmlReader.ReadElementContentAsDecimal();
-                                xmlReader.ReadToNextSibling("Denominator");
-                                C = xmlReader.ReadElementContentAsDecimal();
-                            }
-                            else if (subtreeReader.Name.Contains("Formula"))
-                            {
-                                xmlReader.ReadToDescendant("A");
-                                A = xmlReader.ReadElementContentAsDecimal();
-                                xmlReader.ReadToNextSibling("B");
-                                B = xmlReader.ReadElementContentAsDecimal();
-                                xmlReader.ReadToNextSibling("C");
-                                C = xmlReader.ReadElementContentAsDecimal();
-                                xmlReader.ReadToNextSibling("D");
-                                D = xmlReader.ReadElementContentAsDecimal();  
-
-                            }
-
-                            subtreeReader.Close();
+                            uom.Annotation = curAnnotation;
                         }
                     }
+                    if (xmlReader.Name.ToString() == "Name")
+                    {
+                        string name = xmlReader.ReadString();
+                        if (uom.Annotation != null || name == UOMName)
+                        {
+                            uom.Name = name;
+                        }
+                    }
+                    
+                    if (uom.Name == null)
+                    {
+                        // Conclusion: Neither annotation nor name match with search. Continue to next node
+                        continue;
+                    }
+
+                    if (xmlReader.ReadToNextSibling("CatalogSymbol"))
+                    {
+                        string catalog = xmlReader.ReadString();
+                        uom.Annotation = catalog;
+                    }
+                    if (xmlReader.ReadToNextSibling("ConversionToBaseUnit"))
+                    { 
+                        baseunit = xmlReader.GetAttribute("baseUnit") ?? ""; 
+                    }
+                    else {  
+                        return uom;
+                    }
+                    var subtreeReader = xmlReader.ReadSubtree();
+                    subtreeReader.Read();
+
+                    while (subtreeReader.Name.Contains("ConversionToBaseUnit") || subtreeReader.Name == "")
+                    {
+                        subtreeReader.Read();
+                    }
+
+                    if (subtreeReader.Name.Contains("Factor"))
+                    {
+                        B = xmlReader.ReadElementContentAsDecimal();   
+                    }
+                    else if (subtreeReader.Name.Contains("Fraction"))
+                    {
+                        xmlReader.ReadToDescendant("Numerator");
+                        B = xmlReader.ReadElementContentAsDecimal();
+                        xmlReader.ReadToNextSibling("Denominator");
+                        C = xmlReader.ReadElementContentAsDecimal();
+                    }
+                    else if (subtreeReader.Name.Contains("Formula"))
+                    {
+                        xmlReader.ReadToDescendant("A");
+                        A = xmlReader.ReadElementContentAsDecimal();
+                        xmlReader.ReadToNextSibling("B");
+                        B = xmlReader.ReadElementContentAsDecimal();
+                        xmlReader.ReadToNextSibling("C");
+                        C = xmlReader.ReadElementContentAsDecimal();
+                        xmlReader.ReadToNextSibling("D");
+                        D = xmlReader.ReadElementContentAsDecimal();  
+
+                    }
+
+                    subtreeReader.Close();
+                    break;
                 }
             }
             uom.ConversionParameters = new ConversionParameters(baseunit, A, B, C, D);
