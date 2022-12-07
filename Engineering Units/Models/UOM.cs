@@ -2,7 +2,17 @@
 
 public class UOM
 {
-    public UOM() { }
+    public UOM(string name, string annotation)
+    {
+        Name = name;
+        Annotation = annotation;
+    }
+    public UOM(string name, string annotation, ConversionParameters? conversionParameters)
+    {
+        Name = name;
+        Annotation = annotation;
+        ConversionParameters = conversionParameters;
+    }
     public UOM(string name, string annotation, List<QuantityClass> quantityClasses, ConversionParameters? conversionParameters)
     {
         Name = name;
@@ -15,7 +25,7 @@ public class UOM
 
     public string Annotation { get; set; }
 
-    public List<QuantityClass> QuantityClasses { get; set; }
+    public List<QuantityClass> QuantityClasses = new();
 
     public ConversionParameters? ConversionParameters { get; set; }
 
