@@ -16,8 +16,9 @@ public class APIController : ControllerBase
 
     private static decimal ParseNumer(string number)
     {
-        number = number.Replace(".", ",").Replace(" ", "");
-        return decimal.Parse(number);
+        number = number.Replace(",", ".").Replace(" ", "");
+        decimal converted = decimal.Parse(number, System.Globalization.NumberStyles.AllowDecimalPoint);
+        return converted;
     }
 
     [HttpGet("Convert")]
