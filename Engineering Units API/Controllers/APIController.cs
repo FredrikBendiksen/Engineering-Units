@@ -14,10 +14,17 @@ public class APIController : ControllerBase
         engineeringUnits = Factoring.GetEngineeringUnits(memory);
     }
 
-    [HttpGet("Convert")]
-    public IActionResult Convert(decimal value, string fromUOM, string toUOM)
+    private static decimal ParseNumer(string number)
     {
-        (decimal val, string uom, string annotation) = engineeringUnits.Convert(value, fromUOM, toUOM);
+        number = number.Replace(".", ",").Replace(" ", "");
+        return decimal.Parse(number);
+    }
+
+    [HttpGet("Convert")]
+    public IActionResult Convert(string number, string fromUOM, string toUOM)
+    {
+        
+        (decimal val, string uom, string annotation) = engineeringUnits.Convert(ParseNumer(number), fromUOM, toUOM);
         var json = new JsonResult(new
         {
             value = val,
@@ -85,9 +92,9 @@ public class APIController : ControllerBase
 
     [HttpPost("CreateUOM")]
     public IActionResult CreateUOM(string name, string annotation, string baseUOM,
-        decimal conversionParameterA, decimal conversionParameterB, decimal conversionParameterC, decimal conversionParameterD, string[] quantityClasses)
+        string conversionParameterA, string conversionParameterB, string conversionParameterC, string conversionParameterD, string[] quantityClasses)
     {
-        string? result = engineeringUnits.CreateUOM(name, annotation, quantityClasses.ToList(), baseUOM, conversionParameterA, conversionParameterB, conversionParameterC, conversionParameterD);
+        string? result = engineeringUnits.CreateUOM(name, annotation, quantityClasses.ToList(), baseUOM, ParseNumer(conversionParameterA), ParseNumer(conversionParameterB), ParseNumer(conversionParameterC), ParseNumer(conversionParameterD));
         result ??= "Success";
         return new JsonResult(result);
     }
